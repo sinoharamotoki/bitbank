@@ -29,8 +29,6 @@ public class Example {
         //propertiesファイル名(.propertiesは不要)
         String source = "example";
 
-
-
         try {
 
             //取得処理
