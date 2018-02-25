@@ -30,6 +30,7 @@ public class Example {
         String source = "example";
 
 
+
         try {
 
             //取得処理
