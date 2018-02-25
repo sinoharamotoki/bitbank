@@ -63,10 +63,10 @@ public class ShowData {
 	    }
 	}
 
-	public void showCandlestickToday(List<Candlestick.Ohlcvs.Ohlcv> cs,String strYYYYMMDD) throws Exception {
+	public Date showCandlestickToday(List<Candlestick.Ohlcvs.Ohlcv> cs,String strYYYYMMDD) throws Exception {
 		String strDate = getYYYYMMDD900000(strYYYYMMDD);
 		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-        Date date = sdFormat.parse(strDate);
+        return sdFormat.parse(strDate);
 	}
 
 	public String getYYYYMMDD900000(String strYYYYMMDD) {
