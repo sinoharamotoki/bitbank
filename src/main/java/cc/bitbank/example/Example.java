@@ -25,7 +25,7 @@ public class Example {
     public static void main(String args[]) {
 
     	//propertiesファイル配置ディレクトリ
-        String dir = "/Applications/Eclipse_4.7.2.app/Contents/workspace/java-bitbankcc-master/src/resource";
+        String dir = "/Users/shinoharamotoki/Documents/GitHub/bitbank/src/resource";
         //propertiesファイル名(.propertiesは不要)
         String source = "example";
 
