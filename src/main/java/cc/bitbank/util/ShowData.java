@@ -1,6 +1,7 @@
 package cc.bitbank.util;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -63,14 +64,38 @@ public class ShowData {
 	    }
 	}
 
-	public Date showCandlestickToday(List<Candlestick.Ohlcvs.Ohlcv> cs,String strYYYYMMDD) throws Exception {
-		String strDate = getYYYYMMDD900000(strYYYYMMDD);
-		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
-        return sdFormat.parse(strDate);
+	public List<Candlestick.Ohlcvs.Ohlcv> getCandlestickNewData(List<Candlestick.Ohlcvs.Ohlcv> cs,int intCount){
+		List<Candlestick.Ohlcvs.Ohlcv> rcs = new ArrayList<>();
+		int intLoop = 1;
+		if( cs.size()>intCount){
+			intLoop = cs.size()-intCount;
+		}
+			for(int i=cs.size()-1;i>=intLoop;i--){
+				rcs.add(cs.get(i));
+			}
+		return rcs;
 	}
 
-	public String getYYYYMMDD900000(String strYYYYMMDD) {
-		String strDate = strYYYYMMDD.substring(1, 4) + "/" + strYYYYMMDD.substring(5,2) + "/" + strYYYYMMDD.substring(7,2) + " 09:00:00";
-		return strDate;
+	public List<Candlestick.Ohlcvs.Ohlcv> getCandlestickYYYYMMDDHHMMSS(List<Candlestick.Ohlcvs.Ohlcv> cs,String strYYYYMMDDHHMMSS) throws Exception {
+		List<Candlestick.Ohlcvs.Ohlcv> rcs = new ArrayList<>();
+        for(int i=0;i<cs.size();i++){
+        	if(cs.get(i).date.compareTo(DateAndTime.getYYYYMMDDHHMMSSDate(strYYYYMMDDHHMMSS))==0){
+        		rcs.add(cs.get(i));
+        	}
+        }
+        return rcs;
 	}
+
+	public List<Candlestick.Ohlcvs.Ohlcv> getCandlestickToday(List<Candlestick.Ohlcvs.Ohlcv> cs,String strYYYYMMDD) throws Exception {
+		List<Candlestick.Ohlcvs.Ohlcv> rcs = new ArrayList<>();
+        for(int i=0;i<cs.size();i++){
+        	if(cs.get(i).date.compareTo(DateAndTime.getYYYYMMDDHHMMSSDate(strYYYYMMDD + "090000"))==0){
+        		rcs.add(cs.get(i));
+        	}
+        }
+        return rcs;
+	}
+
+
+
 }

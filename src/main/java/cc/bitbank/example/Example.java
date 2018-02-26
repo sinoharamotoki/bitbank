@@ -15,29 +15,34 @@ import cc.bitbank.entity.Transactions;
 import cc.bitbank.entity.enums.CandleType;
 import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.exception.BitbankException;
+import cc.bitbank.util.DateAndTime;
 import cc.bitbank.util.ShowData;
 
 
 /**
- * Created by tanaka on 2017/04/11.
+ * Created by shinohara on 2018/02/24.
+ * 本システムは日付のやりとりはYYYYMMDD（20180224）で必ず行ってください。
  */
 public class Example {
     public static void main(String args[]) {
 
     	//propertiesファイル配置ディレクトリ
-        String dir = "/Users/shinoharamotoki/Documents/GitHub/bitbank/src/resource";
+        //String dir = "C:/Users/K060404/Documents/GitHub/bitbank/src/resource";
         //propertiesファイル名(.propertiesは不要)
-        String source = "example";
+        //String source = "example";
 
         try {
 
             //取得処理
-            URLClassLoader urlLoader = new URLClassLoader(new URL[]{new File(dir).toURI().toURL()});
-            ResourceBundle rb = ResourceBundle.getBundle(source, Locale.getDefault(), urlLoader);
+            //URLClassLoader urlLoader = new URLClassLoader(new URL[]{new File(dir).toURI().toURL()});
+            //ResourceBundle rb = ResourceBundle.getBundle(source, Locale.getDefault(), urlLoader);
             Bitbankcc bb = new Bitbankcc();
             ShowData showData = new ShowData();
 
-            bb.setKey(rb.getString("key"), rb.getString("secret"));
+            String strYYYYMMDD = DateAndTime.getBaseDate();
+
+            //bb.setKey(rb.getString("key"), rb.getString("secret"));
+            bb.setKey("key", "secret");
 
             // ティッカー情報を返す（トップページの大事な情報　前日比較が無いな。。。）
             Ticker ticker = bb.getTicker(CurrencyPair.BTC_JPY);
@@ -45,33 +50,27 @@ public class Example {
 
             // 板情報を返す（注文に出てくる数字の一覧だと思う）
             Depth depth = bb.getDepth(CurrencyPair.BTC_JPY);
-            showData.showDepth(depth);
+            // showData.showDepth(depth);
 
             // 最新の全約定履歴を返す(歩み値だと思う)
             Transactions.Transaction[] ts = bb.getTransaction(CurrencyPair.BTC_JPY).transactions;
-            showData.showTransaction(ts);
+            // showData.showTransaction(ts);
 
             // 過去分の歩み値(件数多すぎて表示はさせないほうが無難かも)
-            String strYYYYMMDD = "20180223";
-            ts = bb.getTransaction(CurrencyPair.BTC_JPY, strYYYYMMDD).transactions;
+            String strYYYYMMDDOLD = DateAndTime.getAddDate(DateAndTime.getBaseDate(), -1, DateAndTime.DATE); // 過去の日付しか指定できない
+            ts = bb.getTransaction(CurrencyPair.BTC_JPY, strYYYYMMDDOLD).transactions;
             // showData.showTransaction(ts,strYYYYMMDD);
 
+
+            // ローソクの情報を取得
             List<Candlestick.Ohlcvs.Ohlcv> cs = bb.getCandlestick(CurrencyPair.BTC_JPY, CandleType._1DAY, "2018").candlestick[0].getOhlcvList();
 
+            cs = bb.getCandlestick(CurrencyPair.BTC_JPY, CandleType._1MIN, strYYYYMMDD).candlestick[0].getOhlcvList();
+            //showData.showCandlestick(cs);
 
+            // showData.showCandlestick(showData.getCandlestickToday(cs, strYYYYMMDD));
 
-
-            cs = bb.getCandlestick(CurrencyPair.BTC_JPY, CandleType._1MIN, "20180224").candlestick[0].getOhlcvList();
-
-            for (int i=0;i<cs.size();i++) {
-            		System.out.println(cs.get(i).toString());
-            }
-
-
-
-            //List<Candlestick.Ohlcvs.Ohlcv> cs = bb.getCandlestick(CurrencyPair.BTC_JPY, CandleType._1DAY, "2017").candlestick[0].getOhlcvList();
-
-            //System.out.println(ts2);
+            showData.showCandlestick(showData.getCandlestickNewData(cs, 5));
 
 
             /*
