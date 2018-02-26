@@ -1,13 +1,8 @@
 package cc.bitbank.example;
 
-import java.io.File;
 import java.math.BigDecimal;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import cc.bitbank.Bitbankcc;
 import cc.bitbank.entity.Candlestick;
@@ -35,8 +30,8 @@ public class Example {
 
         try {
 
-        	// どのコインを取得するか
-            CurrencyPair cp = CurrencyPair.XRP_JPY;
+        		// どのコインを取得するか
+            CurrencyPair cp = CurrencyPair.BTC_JPY;
 
             // 取得処理（購入する必要がなければいらいない！）
             //URLClassLoader urlLoader = new URLClassLoader(new URL[]{new File(dir).toURI().toURL()});
@@ -63,12 +58,19 @@ public class Example {
             Ticker ticker = bb.getTicker(cp);
             showData.showTicker(ticker);
 
-            // 前日比を算出(基準日前日の最後のデータを取得)
-            List<Candlestick.Ohlcvs.Ohlcv> cs = bb.getCandlestick(cp, CandleType._1MIN, DateAndTime.getAddDate(strYYYYMMDD, -1, DateAndTime.DATE)).candlestick[0].getOhlcvList();
-            //BigDecimal diffNum = ticker.last.subtract(BigDecimal.valueOf( showData.getCandlestickNewData(cs, 1).get(0).close ));
-            BigDecimal diffNum = ticker.last.subtract(showData.getCandlestickNewData(cs, 1).get(0).close );
-            BigDecimal diffPer = diffNum.divide(showData.getCandlestickNewData(cs, 1).get(0).close, 5, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+            // 15日間の値を取得して、配列に格納
+            int count = 0;
+            BigDecimal bc15Day[] = new BigDecimal[16];
+	         // 金額の取得
+            List<Candlestick.Ohlcvs.Ohlcv>  cs = bb.getCandlestick(cp, CandleType._1DAY, strYYYYMMDD.substring(0, 4)).candlestick[0].getOhlcvList();
+	        for(int i=-1;i>=-15;i--) {
+	            	bc15Day[count]=cs.get(cs.size()+i-1).close;
+	            	System.out.println(bc15Day[count]);
+	            	count++;
 
+	        }
+	        BigDecimal diffNum = ticker.last.subtract(bc15Day[0] );
+            BigDecimal diffPer = diffNum.divide(bc15Day[0], 5, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
             System.out.println("前日比：" + diffNum);
             System.out.println("前日比%：" + format.format(diffPer));
 
@@ -76,29 +78,30 @@ public class Example {
             // 一日目はdiffNumにて算出済み
             BigDecimal plus = BigDecimal.valueOf(0);
             BigDecimal minus = BigDecimal.valueOf(0);
+            for(int i=0;i<14;i++) {
+            		BigDecimal diffNumOld = bc15Day[i].subtract(bc15Day[i+1]);
+                if(diffNumOld.compareTo(BigDecimal.valueOf(0))>0){
+                	plus = plus.add(diffNumOld);
+                }else{
+                	minus = minus.add(diffNumOld);
+                }
+                System.out.println(i + " plus:" + plus + " diffTwo:" + minus);
+            }
+
             if(diffNum.compareTo(BigDecimal.valueOf(0))>0){
             	plus = plus.add(diffNum);
             }else{
             	minus = minus.add(diffNum);
             }
-            for(int i=-1;i>=-14;i--){
-            	cs = bb.getCandlestick(cp, CandleType._1MIN, DateAndTime.getAddDate(strYYYYMMDD, i, DateAndTime.DATE)).candlestick[0].getOhlcvList();
-            	//BigDecimal diffOne = BigDecimal.valueOf(showData.getCandlestickNewData(cs, 1).get(0).close );
-            	BigDecimal diffOne = showData.getCandlestickNewData(cs, 1).get(0).close;
-            	cs = bb.getCandlestick(cp, CandleType._1MIN, DateAndTime.getAddDate(strYYYYMMDD, i-1, DateAndTime.DATE)).candlestick[0].getOhlcvList();
-            	//BigDecimal diffTwo = BigDecimal.valueOf(showData.getCandlestickNewData(cs, 1).get(0).close );
-            	BigDecimal diffTwo = showData.getCandlestickNewData(cs, 1).get(0).close;
-            	diffNum = diffOne.subtract(diffTwo);
-                if(diffNum.compareTo(BigDecimal.valueOf(0))>0){
-                	plus = plus.add(diffNum);
-                }else{
-                	minus = minus.add(diffNum);
-                }
-            }
-            plus = plus.divide(BigDecimal.valueOf(14), 4 ,BigDecimal.ROUND_HALF_UP);
-            minus = minus.divide(BigDecimal.valueOf(14), 4 ,BigDecimal.ROUND_HALF_UP);
-            BigDecimal RSI = plus.divide(plus.add(minus.abs()), 4 ,BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+            System.out.println("plus:" + plus + " diffTwo:" + minus);
+            //plus = plus.divide(BigDecimal.valueOf(14), 4 ,BigDecimal.ROUND_HALF_UP);
+            //minus = minus.divide(BigDecimal.valueOf(14), 4 ,BigDecimal.ROUND_HALF_UP);
+            minus = plus.add(minus.abs());
+            System.out.println("plus:" + plus + " diffTwo:" + minus);
+
+            BigDecimal RSI = plus.divide(minus, 4 ,BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
             System.out.println("RSI:" + format.format(RSI));
+
 
 
             // 板情報を返す（注文に出てくる数字の一覧だと思う）
