@@ -20,19 +20,19 @@ public class Candlestick extends Data {
 
         public class Ohlcv {
             @JsonIgnore
-            public int open;
+            public BigDecimal open;
             @JsonIgnore
-            public int high;
+            public BigDecimal high;
             @JsonIgnore
-            public int low;
+            public BigDecimal low;
             @JsonIgnore
-            public int close;
+            public BigDecimal close;
             @JsonIgnore
             public BigDecimal volume;
             @JsonIgnore
             public Date date;
 
-            public Ohlcv(int o, int h, int l, int c, String v, long d) {
+            public Ohlcv(BigDecimal o, BigDecimal h, BigDecimal l, BigDecimal c, String v, long d) {
                 this.open = o;
                 this.high = h;
                 this.low = l;
@@ -51,7 +51,7 @@ public class Candlestick extends Data {
 			List<Ohlcv> list = new ArrayList<Ohlcv>();
             for(BigDecimal[] i : this.ohlcv) {
                 list.add(
-                    new Ohlcv(i[0].intValue(), i[1].intValue(), i[2].intValue(), i[3].intValue(),
+                    new Ohlcv(i[0], i[1], i[2], i[3],
                         i[4].toString(), i[5].longValue())
                 );
             }
