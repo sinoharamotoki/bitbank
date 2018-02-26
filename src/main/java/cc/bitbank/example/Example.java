@@ -67,7 +67,7 @@ public class Example {
             List<Candlestick.Ohlcvs.Ohlcv> cs = bb.getCandlestick(cp, CandleType._1MIN, DateAndTime.getAddDate(strYYYYMMDD, -1, DateAndTime.DATE)).candlestick[0].getOhlcvList();
             //BigDecimal diffNum = ticker.last.subtract(BigDecimal.valueOf( showData.getCandlestickNewData(cs, 1).get(0).close ));
             BigDecimal diffNum = ticker.last.subtract(showData.getCandlestickNewData(cs, 1).get(0).close );
-            BigDecimal diffPer = diffNum.divide(ticker.last, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+            BigDecimal diffPer = diffNum.divide(showData.getCandlestickNewData(cs, 1).get(0).close, 5, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
 
             System.out.println("前日比：" + diffNum);
             System.out.println("前日比%：" + format.format(diffPer));
