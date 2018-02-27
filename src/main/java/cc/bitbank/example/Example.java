@@ -13,6 +13,7 @@ import cc.bitbank.entity.enums.CandleType;
 import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.exception.BitbankException;
 import cc.bitbank.util.DateAndTime;
+import cc.bitbank.util.Rsi;
 import cc.bitbank.util.ShowData;
 
 
@@ -58,50 +59,17 @@ public class Example {
             Ticker ticker = bb.getTicker(cp);
             showData.showTicker(ticker);
 
-            // 15日間の値を取得して、配列に格納
-            int count = 0;
-            BigDecimal bc15Day[] = new BigDecimal[16];
-	         // 金額の取得
+            // 毎日の終値を取得するために、ローソクを設定
             List<Candlestick.Ohlcvs.Ohlcv>  cs = bb.getCandlestick(cp, CandleType._1DAY, strYYYYMMDD.substring(0, 4)).candlestick[0].getOhlcvList();
-	        for(int i=-1;i>=-15;i--) {
-	            	bc15Day[count]=cs.get(cs.size()+i-1).close;
-	            	System.out.println(bc15Day[count]);
-	            	count++;
 
-	        }
-	        BigDecimal diffNum = ticker.last.subtract(bc15Day[0] );
-            BigDecimal diffPer = diffNum.divide(bc15Day[0], 5, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+            BigDecimal diffNum = ticker.last.subtract(cs.get(cs.size()-1).close);
+            BigDecimal diffPer = diffNum.divide(cs.get(cs.size()-1).close, 5, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
             System.out.println("前日比：" + diffNum);
             System.out.println("前日比%：" + format.format(diffPer));
 
-            // RSIを求めたい
-            // 一日目はdiffNumにて算出済み
-            BigDecimal plus = BigDecimal.valueOf(0);
-            BigDecimal minus = BigDecimal.valueOf(0);
-            for(int i=0;i<14;i++) {
-            		BigDecimal diffNumOld = bc15Day[i].subtract(bc15Day[i+1]);
-                if(diffNumOld.compareTo(BigDecimal.valueOf(0))>0){
-                	plus = plus.add(diffNumOld);
-                }else{
-                	minus = minus.add(diffNumOld);
-                }
-                System.out.println(i + " plus:" + plus + " diffTwo:" + minus);
-            }
-
-            if(diffNum.compareTo(BigDecimal.valueOf(0))>0){
-            	plus = plus.add(diffNum);
-            }else{
-            	minus = minus.add(diffNum);
-            }
-            System.out.println("plus:" + plus + " diffTwo:" + minus);
-            //plus = plus.divide(BigDecimal.valueOf(14), 4 ,BigDecimal.ROUND_HALF_UP);
-            //minus = minus.divide(BigDecimal.valueOf(14), 4 ,BigDecimal.ROUND_HALF_UP);
-            minus = plus.add(minus.abs());
-            System.out.println("plus:" + plus + " diffTwo:" + minus);
-
-            BigDecimal RSI = plus.divide(minus, 4 ,BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
-            System.out.println("RSI:" + format.format(RSI));
-
+            // RSIを取得する
+            BigDecimal RSI = Rsi.getRsi(cs);
+            System.out.println(format.format(RSI));
 
 
             // 板情報を返す（注文に出てくる数字の一覧だと思う）
