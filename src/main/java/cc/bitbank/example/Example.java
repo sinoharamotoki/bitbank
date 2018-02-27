@@ -67,9 +67,11 @@ public class Example {
             System.out.println("前日比：" + diffNum);
             System.out.println("前日比%：" + format.format(diffPer));
 
+            cs = bb.getCandlestick(cp, CandleType._1MIN, strYYYYMMDD).candlestick[0].getOhlcvList();
+
             // RSIを取得する
             BigDecimal RSI = Rsi.getRsi(cs);
-            System.out.println(format.format(RSI));
+            System.out.println("RSI:" + format.format(RSI));
 
 
             // 板情報を返す（注文に出てくる数字の一覧だと思う）
@@ -92,12 +94,12 @@ public class Example {
             cs = bb.getCandlestick(cp, CandleType._1MIN, strYYYYMMDD).candlestick[0].getOhlcvList();
             //showData.showCandlestick(cs);
 
-            showData.showCandlestick(showData.getCandlestickToday(cs, strYYYYMMDD));
+            //showData.showCandlestick(showData.getCandlestickToday(cs, strYYYYMMDD));
 
             //showData.showCandlestick(showData.getCandlestickNewData(cs, 5));
 
             cs = bb.getCandlestick(cp, CandleType._1MIN, strYYYYMMDDOLD).candlestick[0].getOhlcvList();
-            showData.showCandlestick(showData.getCandlestickNewData(cs, 5));
+            //showData.showCandlestick(showData.getCandlestickNewData(cs, 5));
 
 
             /*

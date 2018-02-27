@@ -47,20 +47,20 @@ public class Rsi {
 
         for(int i=0;i<14;i++) {
         	BigDecimal diffNumOld = bc15Day[i+1].subtract(bc15Day[i]);
-        	System.out.println(bc15Day[i+1] + "-" + bc15Day[i] + "=" + diffNumOld);
+        	//System.out.println(bc15Day[i+1] + "-" + bc15Day[i] + "=" + diffNumOld);
         	if(diffNumOld.compareTo(BigDecimal.valueOf(0))>0){
             	plus = plus.add(diffNumOld);
             }else{
             	minus = minus.add(diffNumOld);
             }
-            System.out.println(i + " plus:" + plus + " minus:" + minus);
+            //System.out.println(i + " plus:" + plus + " minus:" + minus);
         }
 
         plus = plus.divide(BigDecimal.valueOf(14), 4 ,BigDecimal.ROUND_HALF_UP);
         minus = minus.divide(BigDecimal.valueOf(14), 3 ,BigDecimal.ROUND_HALF_UP);
-        System.out.println("plus:" + plus + " minus:" + minus);
+        //System.out.println("plus:" + plus + " minus:" + minus);
         minus = plus.add(minus.abs());
-        System.out.println("plus:" + plus + " minus:" + minus);
+        //System.out.println("plus:" + plus + " minus:" + minus);
 
         BigDecimal RSI = plus.divide(minus, 4 ,BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
        return RSI;
