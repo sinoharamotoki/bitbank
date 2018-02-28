@@ -1,20 +1,63 @@
 package cc.bitbank.util;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import cc.bitbank.Bitbankcc;
 import cc.bitbank.entity.Candlestick;
+import cc.bitbank.entity.enums.CandleType;
+import cc.bitbank.entity.enums.CurrencyPair;
 
 public class Rsi {
 
-	public static BigDecimal getRsi(List<Candlestick.Ohlcvs.Ohlcv>  cs ){
+	CandlestickLogic candlestickLogic;
+
+
+
+	public Rsi() {
+		candlestickLogic = new CandlestickLogic();
+	}
+
+	public BigDecimal getRsi_1DAY(Bitbankcc bb,CurrencyPair cp) throws Exception{
+		String strYYYYMMDD = DateAndTime.getBaseDate();
+		List<Candlestick.Ohlcvs.Ohlcv>  cs = candlestickLogic.getCs(bb,cp,CandleType._1DAY,strYYYYMMDD.substring(0, 4),15);
+		return getRsi(cs);
+	}
+
+	public BigDecimal getRsi_1HOUR(Bitbankcc bb,CurrencyPair cp) throws Exception{
+		String strYYYYMMDD = DateAndTime.getBaseDate();
+		List<Candlestick.Ohlcvs.Ohlcv>  cs = candlestickLogic.getCs(bb, cp, CandleType._1HOUR, strYYYYMMDD,15);
+		return getRsi(cs);
+	}
+
+	public BigDecimal getRsi_15MIN(Bitbankcc bb,CurrencyPair cp) throws Exception{
+		String strYYYYMMDD = DateAndTime.getBaseDate();
+		List<Candlestick.Ohlcvs.Ohlcv>  cs = candlestickLogic.getCs(bb, cp, CandleType._15MIN, strYYYYMMDD,15);
+		return getRsi(cs);
+	}
+
+	public BigDecimal getRsi_5MIN(Bitbankcc bb,CurrencyPair cp) throws Exception{
+		String strYYYYMMDD = DateAndTime.getBaseDate();
+		List<Candlestick.Ohlcvs.Ohlcv>  cs = candlestickLogic.getCs(bb, cp, CandleType._5MIN, strYYYYMMDD,15);
+		return getRsi(cs);
+	}
+
+	public BigDecimal getRsi_1MIN(Bitbankcc bb,CurrencyPair cp) throws Exception{
+		String strYYYYMMDD = DateAndTime.getBaseDate();
+		List<Candlestick.Ohlcvs.Ohlcv>  cs = candlestickLogic.getCs(bb, cp, CandleType._1MIN, strYYYYMMDD,15);
+		return getRsi(cs);
+	}
+
+	public BigDecimal getRsi(List<Candlestick.Ohlcvs.Ohlcv>  cs ){
         // 15日間の値を取得して、配列に格納
         int count = 0;
         BigDecimal bc15Day[] = new BigDecimal[15];
          // 金額の取得
         for(int i=-14;i<=0;i++) {
             	bc15Day[count]=cs.get(cs.size()+i-1).close;
-            	System.out.println(cs.get(cs.size()+i-1).date + " " + bc15Day[count]);
+            	//System.out.println(cs.get(cs.size()+i-1).date + " " + bc15Day[count]);
             	count++;
 
         }

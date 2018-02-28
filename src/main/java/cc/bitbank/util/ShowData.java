@@ -58,43 +58,7 @@ public class ShowData {
         }
 	}
 
-	public void showCandlestick(List<Candlestick.Ohlcvs.Ohlcv> cs) {
-        for (int i=0;i<cs.size();i++) {
-	    		System.out.println(cs.get(i).toString());
-	    }
-	}
 
-	public List<Candlestick.Ohlcvs.Ohlcv> getCandlestickNewData(List<Candlestick.Ohlcvs.Ohlcv> cs,int intCount){
-		List<Candlestick.Ohlcvs.Ohlcv> rcs = new ArrayList<>();
-		int intLoop = 1;
-		if( cs.size()>intCount){
-			intLoop = cs.size()-intCount;
-		}
-			for(int i=cs.size()-1;i>=intLoop;i--){
-				rcs.add(cs.get(i));
-			}
-		return rcs;
-	}
-
-	public List<Candlestick.Ohlcvs.Ohlcv> getCandlestickYYYYMMDDHHMMSS(List<Candlestick.Ohlcvs.Ohlcv> cs,String strYYYYMMDDHHMMSS) throws Exception {
-		List<Candlestick.Ohlcvs.Ohlcv> rcs = new ArrayList<>();
-        for(int i=0;i<cs.size();i++){
-        	if(cs.get(i).date.compareTo(DateAndTime.getYYYYMMDDHHMMSSDate(strYYYYMMDDHHMMSS))==0){
-        		rcs.add(cs.get(i));
-        	}
-        }
-        return rcs;
-	}
-
-	public List<Candlestick.Ohlcvs.Ohlcv> getCandlestickToday(List<Candlestick.Ohlcvs.Ohlcv> cs,String strYYYYMMDD) throws Exception {
-		List<Candlestick.Ohlcvs.Ohlcv> rcs = new ArrayList<>();
-        for(int i=0;i<cs.size();i++){
-        	if(cs.get(i).date.compareTo(DateAndTime.getYYYYMMDDHHMMSSDate(strYYYYMMDD + "090000"))==0){
-        		rcs.add(cs.get(i));
-        	}
-        }
-        return rcs;
-	}
 
 
 

@@ -12,6 +12,7 @@ import cc.bitbank.entity.Transactions;
 import cc.bitbank.entity.enums.CandleType;
 import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.exception.BitbankException;
+import cc.bitbank.util.CandlestickLogic;
 import cc.bitbank.util.DateAndTime;
 import cc.bitbank.util.Rsi;
 import cc.bitbank.util.ShowData;
@@ -41,6 +42,7 @@ public class Example {
 
             // 表示するためのロジック
             ShowData showData = new ShowData();
+            CandlestickLogic csLogic = new CandlestickLogic();
 
             // 処理の当日日付を取得
             String strYYYYMMDD = DateAndTime.getBaseDate();
@@ -60,18 +62,19 @@ public class Example {
             showData.showTicker(ticker);
 
             // 毎日の終値を取得するために、ローソクを設定
-            List<Candlestick.Ohlcvs.Ohlcv>  cs = bb.getCandlestick(cp, CandleType._1DAY, strYYYYMMDD.substring(0, 4)).candlestick[0].getOhlcvList();
-
-            BigDecimal diffNum = ticker.last.subtract(cs.get(cs.size()-1).close);
-            BigDecimal diffPer = diffNum.divide(cs.get(cs.size()-1).close, 5, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+            List<Candlestick.Ohlcvs.Ohlcv>  cs = csLogic.getCs(bb, cp, CandleType._1DAY, strYYYYMMDD,2);
+            BigDecimal diffNum = ticker.last.subtract(cs.get(0).close);
+            BigDecimal diffPer = diffNum.divide(cs.get(0).close, 5, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
             System.out.println("前日比：" + diffNum);
             System.out.println("前日比%：" + format.format(diffPer));
 
-            cs = bb.getCandlestick(cp, CandleType._1MIN, strYYYYMMDD).candlestick[0].getOhlcvList();
-
             // RSIを取得する
-            BigDecimal RSI = Rsi.getRsi(cs);
-            System.out.println("RSI:" + format.format(RSI));
+            Rsi rsi = new Rsi();
+            System.out.println("RSI_1DAY:" + format.format(rsi.getRsi_1DAY(bb, cp)));
+            System.out.println("RSI_1HOUR:" + format.format(rsi.getRsi_1HOUR(bb, cp)));
+            System.out.println("RSI_15MIN:" + format.format(rsi.getRsi_15MIN(bb, cp)));
+            System.out.println("RSI_5MIN:" + format.format(rsi.getRsi_5MIN(bb, cp)));
+            System.out.println("RSI_1MIN:" + format.format(rsi.getRsi_1MIN(bb, cp)));
 
 
             // 板情報を返す（注文に出てくる数字の一覧だと思う）
@@ -89,17 +92,21 @@ public class Example {
 
 
             // ローソクの情報を取得
-            cs = bb.getCandlestick(cp, CandleType._1DAY, "2018").candlestick[0].getOhlcvList();
+//            cs = csLogic.getCs(bb, cp, CandleType._1DAY, strYYYYMMDD,5);
+//            csLogic.showCandlestick(cs);
+//
+//            cs = csLogic.getCs(bb, cp, CandleType._1MIN, strYYYYMMDD);
+//            csLogic.showCandlestick(cs, 5);
 
-            cs = bb.getCandlestick(cp, CandleType._1MIN, strYYYYMMDD).candlestick[0].getOhlcvList();
+//            csLogic.showCandlestick(cs);
+
             //showData.showCandlestick(cs);
 
             //showData.showCandlestick(showData.getCandlestickToday(cs, strYYYYMMDD));
 
             //showData.showCandlestick(showData.getCandlestickNewData(cs, 5));
 
-            cs = bb.getCandlestick(cp, CandleType._1MIN, strYYYYMMDDOLD).candlestick[0].getOhlcvList();
-            //showData.showCandlestick(showData.getCandlestickNewData(cs, 5));
+            //csLogic.showCandlestick(cs);
 
 
             /*
