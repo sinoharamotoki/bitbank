@@ -12,6 +12,7 @@ import cc.bitbank.entity.Transactions;
 import cc.bitbank.entity.enums.CandleType;
 import cc.bitbank.entity.enums.CurrencyPair;
 import cc.bitbank.exception.BitbankException;
+import cc.bitbank.util.Bb;
 import cc.bitbank.util.CandlestickLogic;
 import cc.bitbank.util.DateAndTime;
 import cc.bitbank.util.Rsi;
@@ -38,7 +39,7 @@ public class Example {
             // 取得処理（購入する必要がなければいらいない！）
             //URLClassLoader urlLoader = new URLClassLoader(new URL[]{new File(dir).toURI().toURL()});
             //ResourceBundle rb = ResourceBundle.getBundle(source, Locale.getDefault(), urlLoader);
-            Bitbankcc bb = new Bitbankcc();
+            Bitbankcc bitbankcc = new Bitbankcc();
 
             // 表示するためのロジック
             ShowData showData = new ShowData();
@@ -55,39 +56,51 @@ public class Example {
 
             // 購入する際には、必要なキーみたい。。。
             //bb.setKey(rb.getString("key"), rb.getString("secret"));
-            bb.setKey("key", "secret");
+            bitbankcc.setKey("key", "secret");
 
             // ティッカー情報を返す（トップページの大事な情報）
-            Ticker ticker = bb.getTicker(cp);
+            Ticker ticker = bitbankcc.getTicker(cp);
             showData.showTicker(ticker);
 
             // 毎日の終値を取得するために、ローソクを設定
-            List<Candlestick.Ohlcvs.Ohlcv>  cs = csLogic.getCs(bb, cp, CandleType._1DAY, strYYYYMMDD,2);
+            List<Candlestick.Ohlcvs.Ohlcv>  cs = csLogic.getCs(bitbankcc, cp, CandleType._1DAY, strYYYYMMDD,2);
             BigDecimal diffNum = ticker.last.subtract(cs.get(0).close);
             BigDecimal diffPer = diffNum.divide(cs.get(0).close, 5, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
             System.out.println("前日比：" + diffNum);
             System.out.println("前日比%：" + format.format(diffPer));
 
             // RSIを取得する
-            Rsi rsi = new Rsi();
-            System.out.println("RSI_1DAY:" + format.format(rsi.getRsi_1DAY(bb, cp)));
-            System.out.println("RSI_1HOUR:" + format.format(rsi.getRsi_1HOUR(bb, cp)));
-            System.out.println("RSI_15MIN:" + format.format(rsi.getRsi_15MIN(bb, cp)));
-            System.out.println("RSI_5MIN:" + format.format(rsi.getRsi_5MIN(bb, cp)));
-            System.out.println("RSI_1MIN:" + format.format(rsi.getRsi_1MIN(bb, cp)));
+//            Rsi rsi = new Rsi();
+//            System.out.println("RSI_1DAY:" + format.format(rsi.getRsi_1DAY(bitbankcc, cp)));
+//            System.out.println("RSI_1HOUR:" + format.format(rsi.getRsi_1HOUR(bitbankcc, cp)));
+//            System.out.println("RSI_15MIN:" + format.format(rsi.getRsi_15MIN(bitbankcc, cp)));
+//            System.out.println("RSI_5MIN:" + format.format(rsi.getRsi_5MIN(bitbankcc, cp)));
+//            System.out.println("RSI_1MIN:" + format.format(rsi.getRsi_1MIN(bitbankcc, cp)));
+
+            // BBを取得する
+            Bb bb = new Bb();
+            BigDecimal bbVal[] = bb.getBb_1DAY(bitbankcc, cp , 9);
+            System.out.println("BB+1:" + bbVal[0]);
+            System.out.println("BB-1:" + bbVal[1]);
+            System.out.println("BB+2:" + bbVal[2]);
+            System.out.println("BB-2:" + bbVal[3]);
+            System.out.println("BB+3:" + bbVal[4]);
+            System.out.println("BB-3:" + bbVal[5]);
+
+
 
 
             // 板情報を返す（注文に出てくる数字の一覧だと思う）
-            Depth depth = bb.getDepth(cp);
+            Depth depth = bitbankcc.getDepth(cp);
             // showData.showDepth(depth);
 
             // 最新の全約定履歴を返す(歩み値だと思う)
-            Transactions.Transaction[] ts = bb.getTransaction(cp).transactions;
+            Transactions.Transaction[] ts = bitbankcc.getTransaction(cp).transactions;
             // showData.showTransaction(ts);
 
             // 過去分の歩み値(件数多すぎて表示はさせないほうが無難かも)
             String strYYYYMMDDOLD = DateAndTime.getAddDate(DateAndTime.getBaseDate(), -1, DateAndTime.DATE); // 過去の日付しか指定できない
-            ts = bb.getTransaction(cp, strYYYYMMDDOLD).transactions;
+            ts = bitbankcc.getTransaction(cp, strYYYYMMDDOLD).transactions;
             // showData.showTransaction(ts,strYYYYMMDD);
 
 
