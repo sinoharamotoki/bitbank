@@ -32,6 +32,7 @@ public class Example {
         //String source = "example";
 
         try {
+        	CurrencyPair cps[] = {CurrencyPair.BTC_JPY,CurrencyPair.XRP_JPY,CurrencyPair.MONA_JPY};
 
         		// どのコインを取得するか
             CurrencyPair cp = CurrencyPair.BTC_JPY;
@@ -58,6 +59,8 @@ public class Example {
             //bb.setKey(rb.getString("key"), rb.getString("secret"));
             bbcc.setKey("key", "secret");
 
+for(int i=0;i<cps.length;i++){
+	cp = cps[i];
             // ティッカー情報を返す（トップページの大事な情報）
             Ticker ticker = bbcc.getTicker(cp);
             showData.showTicker(ticker);
@@ -70,23 +73,23 @@ public class Example {
             System.out.println("前日比%：" + format.format(diffPer));
 
             // RSIを取得する
-//            Rsi rsi = new Rsi();
+            Rsi rsi = new Rsi();
 //            System.out.println("RSI_1DAY:" + format.format(rsi.getRsi_1DAY(bbcc, cp)));
 //            System.out.println("RSI_1HOUR:" + format.format(rsi.getRsi_1HOUR(bbcc, cp)));
 //            System.out.println("RSI_15MIN:" + format.format(rsi.getRsi_15MIN(bbcc, cp)));
 //            System.out.println("RSI_5MIN:" + format.format(rsi.getRsi_5MIN(bbcc, cp)));
-//            System.out.println("RSI_1MIN:" + format.format(rsi.getRsi_1MIN(bbcc, cp)));
+            System.out.println("RSI_1MIN:" + format.format(rsi.getRsi_1MIN(bbcc, cp)));
 
             // BBを取得する
             Bb bb = new Bb();
-            BigDecimal bbVal[] = bb.getBb_1DAY(bbcc, cp , 9);
-            System.out.println("BB+1:" + bbVal[0]);
-            System.out.println("BB-1:" + bbVal[1]);
-            System.out.println("BB+2:" + bbVal[2]);
-            System.out.println("BB-2:" + bbVal[3]);
-            System.out.println("BB+3:" + bbVal[4]);
-            System.out.println("BB-3:" + bbVal[5]);
-
+            BigDecimal bbVal[] = bb.getBb_1MIN(bbcc, cp , 9);
+            System.out.println("BB+1:" + bb.getLine(bbVal, 1));
+            System.out.println("BB-1:" + bb.getLine(bbVal, -1));
+            System.out.println("BB+2:" + bb.getLine(bbVal, 2));
+            System.out.println("BB-2:" + bb.getLine(bbVal, -2));
+            System.out.println("BB+3:" + bb.getLine(bbVal, 3));
+            System.out.println("BB-3:" + bb.getLine(bbVal, -3));
+}
 
 
 

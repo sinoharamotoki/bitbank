@@ -74,7 +74,7 @@ public class Bb {
         for(int i=0;i<bcDay.length;i++){
         	average = average.add(bcDay[i]);
         }
-        average = average.divide(BigDecimal.valueOf(bcDay.length), 0 ,BigDecimal.ROUND_HALF_UP);
+        average = average.divide(BigDecimal.valueOf(bcDay.length), 3 ,BigDecimal.ROUND_HALF_UP);
 
         BigDecimal val = BigDecimal.valueOf(0);
 
@@ -88,17 +88,45 @@ public class Bb {
         stdev = Math.sqrt(val.doubleValue()/bcDay.length);
 
         BigDecimal BB[] = {
-        		(average.add(BigDecimal.valueOf(stdev))).divide(BigDecimal.valueOf(1), 0 ,BigDecimal.ROUND_HALF_UP),
-        		(average.subtract(BigDecimal.valueOf(stdev))).divide(BigDecimal.valueOf(1), 0 ,BigDecimal.ROUND_HALF_UP),
-        		(average.add(BigDecimal.valueOf(stdev).multiply(BigDecimal.valueOf(2)))).divide(BigDecimal.valueOf(1), 0 ,BigDecimal.ROUND_HALF_UP),
-        		(average.subtract(BigDecimal.valueOf(stdev).multiply(BigDecimal.valueOf(2)))).divide(BigDecimal.valueOf(1), 0 ,BigDecimal.ROUND_HALF_UP),
-        		(average.add(BigDecimal.valueOf(stdev).multiply(BigDecimal.valueOf(3)))).divide(BigDecimal.valueOf(1), 0 ,BigDecimal.ROUND_HALF_UP),
-        		(average.subtract(BigDecimal.valueOf(stdev).multiply(BigDecimal.valueOf(3)))).divide(BigDecimal.valueOf(1), 0 ,BigDecimal.ROUND_HALF_UP)
+        		(average.add(BigDecimal.valueOf(stdev))).divide(BigDecimal.valueOf(1), 3 ,BigDecimal.ROUND_HALF_UP),
+        		(average.subtract(BigDecimal.valueOf(stdev))).divide(BigDecimal.valueOf(1), 3 ,BigDecimal.ROUND_HALF_UP),
+        		(average.add(BigDecimal.valueOf(stdev).multiply(BigDecimal.valueOf(2)))).divide(BigDecimal.valueOf(1), 3 ,BigDecimal.ROUND_HALF_UP),
+        		(average.subtract(BigDecimal.valueOf(stdev).multiply(BigDecimal.valueOf(2)))).divide(BigDecimal.valueOf(1), 3 ,BigDecimal.ROUND_HALF_UP),
+        		(average.add(BigDecimal.valueOf(stdev).multiply(BigDecimal.valueOf(3)))).divide(BigDecimal.valueOf(1), 3 ,BigDecimal.ROUND_HALF_UP),
+        		(average.subtract(BigDecimal.valueOf(stdev).multiply(BigDecimal.valueOf(3)))).divide(BigDecimal.valueOf(1), 3 ,BigDecimal.ROUND_HALF_UP)
 
         		};
        return BB;
 
 
+	}
+
+	public BigDecimal getLine(BigDecimal[] bb,int line){
+		BigDecimal returnBb = BigDecimal.valueOf(0);
+		switch (line) {
+		case 1:
+			returnBb = bb[0];
+			break;
+		case -1:
+			returnBb = bb[1];
+			break;
+		case 2:
+			returnBb = bb[2];
+			break;
+		case -2:
+			returnBb = bb[3];
+			break;
+		case 3:
+			returnBb = bb[4];
+			break;
+		case -3:
+			returnBb = bb[5];
+			break;
+		default:
+			break;
+		}
+
+		return returnBb;
 	}
 
 }
