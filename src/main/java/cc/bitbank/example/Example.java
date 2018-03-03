@@ -83,13 +83,22 @@ for(int i=0;i<cps.length;i++){
             // BBを取得する
             Bb bb = new Bb();
             BigDecimal bbVal[] = bb.getBb_1MIN(bbcc, cp , 9);
-            System.out.println("BB+1:" + bb.getLine(bbVal, 1));
-            System.out.println("BB-1:" + bb.getLine(bbVal, -1));
-            System.out.println("BB+2:" + bb.getLine(bbVal, 2));
-            System.out.println("BB-2:" + bb.getLine(bbVal, -2));
-            System.out.println("BB+3:" + bb.getLine(bbVal, 3));
-            System.out.println("BB-3:" + bb.getLine(bbVal, -3));
+            //System.out.println("BB+1:" + bb.getLine(bbVal, 1));
+            //System.out.println("BB-1:" + bb.getLine(bbVal, -1));
+            System.out.println("BB+2:-2  " + bb.getLine(bbVal, 2) + ":" + bb.getLine(bbVal, -2));
+            System.out.println("BB+3:-3  " + bb.getLine(bbVal, 3) + ":" + bb.getLine(bbVal, -3));
+
+            if (bb.getLine(bbVal, 3).subtract(ticker.last).doubleValue() < 0 ) {
+            		System.out.println("---BB+3　オーバー中 " + bb.getLine(bbVal, 3).subtract(ticker.last));
+            }else if (bb.getLine(bbVal, 2).subtract(ticker.last).doubleValue() < 0 ) {
+        			System.out.println("---BB+2　オーバー中 " + bb.getLine(bbVal, 2).subtract(ticker.last));
+            }else if (ticker.last.subtract(bb.getLine(bbVal, -3)).doubleValue() < 0 ) {
+	    			System.out.println("---BB-3　オーバー中 買っちゃえ！！ " + ticker.last.subtract(bb.getLine(bbVal, -3)));
+            }else if (ticker.last.subtract(bb.getLine(bbVal, -2)).doubleValue() < 0 ) {
+        			System.out.println("---BB-2　オーバー中 買いかも " + ticker.last.subtract(bb.getLine(bbVal, -2)));
+            }
 }
+
 
 
 
