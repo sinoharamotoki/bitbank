@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+実行させるには
+ 1.dos等で bitbnk　フォルダまで移動
+ 2.mvn install　コマンドの実施
+ 3.java -jar ./target/bitbank-jar-with-dependencies.jar  と実行する
+ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -63,6 +69,35 @@
                     </execution>
                 </executions>
             </plugin>
+
+<!-- 実行可能jarファイル用のプラグイン -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <version>3.0.0</version>
+    <configuration>
+        <finalName>bitbank</finalName>
+        <descriptorRefs>
+            <!-- 依存するリソースをすべてjarに同梱する -->
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+        <archive>
+            <manifest>
+                <mainClass>cc.bitbank.example.Example</mainClass>
+            </manifest>
+        </archive>
+    </configuration>
+    <executions>
+        <execution>
+            <!-- idタグは任意の文字列であれば何でもよい -->
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+                <goal>single</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
         </plugins>
     </build>
     <!--$ mvn clean deploy-->
