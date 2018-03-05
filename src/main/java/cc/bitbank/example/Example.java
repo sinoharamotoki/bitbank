@@ -61,9 +61,10 @@ public class Example {
 
 for(int i=0;i<cps.length;i++){
 	cp = cps[i];
+			System.out.println("\n\n" + cp);
             // ティッカー情報を返す（トップページの大事な情報）
             Ticker ticker = bbcc.getTicker(cp);
-            showData.showTicker(ticker);
+            System.out.println(showData.showTicker(ticker));
 
             // 毎日の終値を取得するために、ローソクを設定
             List<Candlestick.Ohlcvs.Ohlcv>  cs = csLogic.getCs(bbcc, cp, CandleType._1DAY, strYYYYMMDD,2);
