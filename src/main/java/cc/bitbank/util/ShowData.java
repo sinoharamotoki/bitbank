@@ -12,25 +12,29 @@ import cc.bitbank.entity.Transactions;
 
 public class ShowData {
 
-	public void showTicker(Ticker ticker) {
-        System.out.println("最新取引価格：" + ticker.last);
-        System.out.println("歩み値の買い注文の最高値：" + ticker.buy);
-        System.out.println("歩み値の売り注文の最安値：" + ticker.sell);
-        System.out.println("安値：" + ticker.low);
-        System.out.println("高値：" + ticker.high);
-        System.out.println("取得日：" + ticker.timestamp);
-        System.out.println("出来高：" + ticker.vol);
+	public String showTicker(Ticker ticker) {
+		StringBuffer sb = new StringBuffer();
+        sb.append("最新取引価格：" + ticker.last + "\n");
+        //sb.append("歩み値の買い注文の最高値：" + ticker.buy + "\n");
+        //sb.append("歩み値の売り注文の最安値：" + ticker.sell + "\n");
+        sb.append("安値：" + ticker.low + "\n");
+        sb.append("高値：" + ticker.high + "\n");
+        //sb.append("取得日：" + ticker.timestamp + "\n");
+        //sb.append("出来高：" + ticker.vol + "\n");
+        return sb.toString();
 	}
 
-	public void showDepth(Depth depth) {
+	public String showDepth(Depth depth) {
+		StringBuffer sb = new StringBuffer();
 		//　多分、注文に表示されている部分だと思う。
         for(int i=0;i<depth.getAsks().length;i++) {
-            	System.out.println("売り板 i:" + i + "  :" + depth.getAsks()[i][0] + " " + depth.getAsks()[i][1]);
+        	sb.append("売り板 i:" + i + "  :" + depth.getAsks()[i][0] + " " + depth.getAsks()[i][1] + "\n");
         }
 
         for(int i=0;i<depth.getBids().length;i++) {
-            	System.out.println("買い板 i:" + i + "  :" + depth.getBids()[i][0] + " " + depth.getBids()[i][1]);
+        	sb.append("買い板 i:" + i + "  :" + depth.getBids()[i][0] + " " + depth.getBids()[i][1] + "\n");
         }
+        return sb.toString();
         /*
         ↑の正式なループ
         for(int i=0;i<depth.getAsks().length;i++) {
@@ -46,16 +50,20 @@ public class ShowData {
         }*/
 	}
 
-	public void showTransaction(Transactions.Transaction[] ts) {
+	public String showTransaction(Transactions.Transaction[] ts) {
+		StringBuffer sb = new StringBuffer();
         for(int i=0;i<ts.length;i++) {
-    			System.out.println("直近の歩み値：" + ts[i]);
+    			sb.append("直近の歩み値：" + ts[i] + "\n");
         }
+        return sb.toString();
 	}
 
-	public void showTransaction(Transactions.Transaction[] ts,String strYYYYMMDD) {
+	public String showTransaction(Transactions.Transaction[] ts,String strYYYYMMDD) {
+		StringBuffer sb = new StringBuffer();
         for(int i=0;i<ts.length;i++) {
-    			System.out.println(strYYYYMMDD + "歩み値：" + ts[i]);
+    			sb.append(strYYYYMMDD + "歩み値：" + ts[i] + "\n");
         }
+        return sb.toString();
 	}
 
 
