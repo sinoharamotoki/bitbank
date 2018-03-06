@@ -61,7 +61,7 @@ public class Example {
 
 for(int i=0;i<cps.length;i++){
 	cp = cps[i];
-			System.out.println("\n\n" + cp);
+			System.out.println("種類：" + cp);
             // ティッカー情報を返す（トップページの大事な情報）
             Ticker ticker = bbcc.getTicker(cp);
             System.out.println(showData.showTicker(ticker));
@@ -98,6 +98,7 @@ for(int i=0;i<cps.length;i++){
             }else if (ticker.last.subtract(bb.getLine(bbVal, -2)).doubleValue() < 0 ) {
         			System.out.println("---BB-2　オーバー中 買いかも " + ticker.last.subtract(bb.getLine(bbVal, -2)));
             }
+            System.out.println("");
 }
 
 
