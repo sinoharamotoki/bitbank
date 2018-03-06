@@ -21,7 +21,7 @@ public class ShowData {
         sb.append("高値：" + ticker.high + "\n");
         //sb.append("取得日：" + ticker.timestamp + "\n");
         //sb.append("出来高：" + ticker.vol + "\n");
-        return sb.toString();
+        return sb.toString().trim();
 	}
 
 	public String showDepth(Depth depth) {
@@ -34,7 +34,7 @@ public class ShowData {
         for(int i=0;i<depth.getBids().length;i++) {
         	sb.append("買い板 i:" + i + "  :" + depth.getBids()[i][0] + " " + depth.getBids()[i][1] + "\n");
         }
-        return sb.toString();
+        return sb.toString().trim();
         /*
         ↑の正式なループ
         for(int i=0;i<depth.getAsks().length;i++) {
@@ -55,7 +55,7 @@ public class ShowData {
         for(int i=0;i<ts.length;i++) {
     			sb.append("直近の歩み値：" + ts[i] + "\n");
         }
-        return sb.toString();
+        return sb.toString().trim();
 	}
 
 	public String showTransaction(Transactions.Transaction[] ts,String strYYYYMMDD) {
@@ -63,7 +63,7 @@ public class ShowData {
         for(int i=0;i<ts.length;i++) {
     			sb.append(strYYYYMMDD + "歩み値：" + ts[i] + "\n");
         }
-        return sb.toString();
+        return sb.toString().trim();
 	}
 
 
