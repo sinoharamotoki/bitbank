@@ -111,6 +111,11 @@ for(int i=0;i<cps.length;i++){
             	System.out.println(minPrice.get(cp) + "を下回っているため、購入をお勧めします。");
             }
 
+            // 安値の値段を下回っているか確認
+            if (ticker.last.subtract(ticker.low).doubleValue() <= 0){
+            	System.out.println("安値を下回っているため、購入をお勧めします。");
+            }
+
             System.out.println("");
 }
 

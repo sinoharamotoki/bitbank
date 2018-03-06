@@ -105,7 +105,12 @@ public class Rsi {
         minus = plus.add(minus.abs());
         //System.out.println("plus:" + plus + " minus:" + minus);
 
-        BigDecimal RSI = plus.divide(minus, 4 ,BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+    	BigDecimal RSI = BigDecimal.valueOf(0);
+        try{
+        	RSI = plus.divide(minus, 4 ,BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100));
+        }catch(Exception e){
+        	// 何もしない
+        }
        return RSI;
 
 
