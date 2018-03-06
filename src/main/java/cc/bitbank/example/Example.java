@@ -2,6 +2,7 @@ package cc.bitbank.example;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
 
 import cc.bitbank.Bitbankcc;
@@ -30,6 +31,12 @@ public class Example {
         //String dir = "C:/Users/K060404/Documents/GitHub/bitbank/src/resource";
         //propertiesファイル名(.propertiesは不要)
         //String source = "example";
+
+    	// これ以下に値段がなったら検知
+    	HashMap<CurrencyPair, BigDecimal> minPrice = new HashMap<>();
+    	minPrice.put(CurrencyPair.BTC_JPY, BigDecimal.valueOf(1000000));
+    	minPrice.put(CurrencyPair.XRP_JPY, BigDecimal.valueOf(100));
+    	minPrice.put(CurrencyPair.MONA_JPY, BigDecimal.valueOf(550));
 
         try {
         	CurrencyPair cps[] = {CurrencyPair.BTC_JPY,CurrencyPair.XRP_JPY,CurrencyPair.MONA_JPY};
@@ -98,6 +105,12 @@ for(int i=0;i<cps.length;i++){
             }else if (ticker.last.subtract(bb.getLine(bbVal, -2)).doubleValue() < 0 ) {
         			System.out.println("---BB-2　オーバー中 買いかも " + ticker.last.subtract(bb.getLine(bbVal, -2)));
             }
+
+            // 最低値の値段を下回っているか確認
+            if (ticker.last.subtract(minPrice.get(cp)).doubleValue() < 0){
+            	System.out.println(minPrice.get(cp) + "を下回っているため、購入をお勧めします。");
+            }
+
             System.out.println("");
 }
 
