@@ -34,9 +34,9 @@ public class Example {
 
     	// これ以下に値段がなったら検知
     	HashMap<CurrencyPair, BigDecimal> minPrice = new HashMap<>();
-    	minPrice.put(CurrencyPair.BTC_JPY, BigDecimal.valueOf(1000000));
-    	minPrice.put(CurrencyPair.XRP_JPY, BigDecimal.valueOf(100));
-    	minPrice.put(CurrencyPair.MONA_JPY, BigDecimal.valueOf(550));
+    	minPrice.put(CurrencyPair.BTC_JPY, BigDecimal.valueOf(750000));
+    	minPrice.put(CurrencyPair.XRP_JPY, BigDecimal.valueOf(65));
+    	minPrice.put(CurrencyPair.MONA_JPY, BigDecimal.valueOf(300));
 
         try {
         	CurrencyPair cps[] = {CurrencyPair.BTC_JPY,CurrencyPair.XRP_JPY,CurrencyPair.MONA_JPY};
@@ -86,7 +86,8 @@ for(int i=0;i<cps.length;i++){
 //            System.out.println("RSI_1HOUR:" + format.format(rsi.getRsi_1HOUR(bbcc, cp)));
 //            System.out.println("RSI_15MIN:" + format.format(rsi.getRsi_15MIN(bbcc, cp)));
 //            System.out.println("RSI_5MIN:" + format.format(rsi.getRsi_5MIN(bbcc, cp)));
-            System.out.println("RSI_1MIN:" + format.format(rsi.getRsi_1MIN(bbcc, cp)));
+//            System.out.println("RSI_1MIN:" + format.format(rsi.getRsi_1MIN(bbcc, cp)));
+            System.out.println("RSI_1MIN:" + format.format(rsi.getRsi_1MIN(bbcc, cp, 14)));
 
             // BBを取得する
             Bb bb = new Bb();
